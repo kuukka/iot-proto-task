@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 async function loginUser(credentials) {
-    return fetch('http://localhost:3001/api/auth/login', {
+    return fetch('/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
