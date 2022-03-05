@@ -6,39 +6,51 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Api from '../utils/Api';
 
-async function loginUser(credentials) {
-    return fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(credentials)
-    })
-    .then(data => data.json())
-}
-
-const Login = ({setToken}) => {
+const Signup = ({setToken}) => {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [password2, setPassword2] = useState("");
     
     const handleSubmit = async e => {
         e.preventDefault();
 
-        const token = await Api.post('/api/auth/login', JSON.stringify({
+        if(password !== password2) {
+            alert("Passwords do not match!");
+            return false;
+        }
+
+        const response = await Api.post('/api/auth/signup', JSON.stringify({
+            name,
             email,
             password
         }))
         .then(data => data.json());
 
-        setToken(token);
+        if(!response.token) {
+            alert("User already exists");
+            return false;
+        }
+
+        setToken(response);
     }
 
     return (
         <Page>
             <Row className='mt-3'>
                 <Col xs={4}>
-                    <h1>Login</h1>
+                    <h1>Signup</h1>
                     <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3" controlId="formBasicName">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control 
+                                type="text"
+                                placeholder="Enter your name"
+                                value={name}
+                                onChange={e => setName(e.target.value)}  
+                            />    
+                        </Form.Group>
+
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>
                             <Form.Control 
@@ -52,7 +64,7 @@ const Login = ({setToken}) => {
                             </Form.Text>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Group className="mb-3" controlId="formBasicPassword1">
                             <Form.Label>Password</Form.Label>
                             <Form.Control 
                                 type="password"
@@ -61,9 +73,17 @@ const Login = ({setToken}) => {
                                 onChange={e => setPassword(e.target.value)} 
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Check me out" />
+
+                        <Form.Group className="mb-3" controlId="formBasicPassword2">
+                            <Form.Label>Password again</Form.Label>
+                            <Form.Control 
+                                type="password"
+                                placeholder="Password"
+                                value={password2}
+                                onChange={e => setPassword2(e.target.value)} 
+                            />
                         </Form.Group>
+              
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>
@@ -74,4 +94,4 @@ const Login = ({setToken}) => {
     )
 }
 
-export default Login;
+export default Signup;
