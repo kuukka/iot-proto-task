@@ -39,6 +39,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 
 
+// Rest goes to frontend
+app.use('/', express.static(__dirname+"/build"));
+
 // app.get('/', (req, res) => {
 //     res.json({
 //         author: app.get('pkg').author,
