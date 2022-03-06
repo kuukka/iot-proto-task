@@ -13,7 +13,7 @@ const Router = () => {
     const location = useLocation();
     const {token, setToken} = useToken();
     const {setUsername} = useUsername();
-    
+
     if(location.pathname === '/logout') {
         if(token) {
             setToken("");
@@ -24,7 +24,7 @@ const Router = () => {
 
     return (
         <Routes>
-            <Route path="/" element={<Home/>} />
+            <Route exact path="/" element={<Home/>} />
             <Route path="/signup" element={            
                 token 
                     ? <Navigate  to="/" />

@@ -40,8 +40,8 @@ app.use('/api/books', bookRoutes);
 
 
 // Rest goes to frontend
-app.get('*', (req,res) =>{
-  res.sendFile(path.join(__dirname+'/build/index.html'));
+app.use('/', (req,res) =>{
+  res.sendFile(path.resolve('build', 'index.html'));
 });
 
 // app.get('/', (req, res) => {
