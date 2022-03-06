@@ -57,6 +57,7 @@ const Signup = ({setToken}) => {
                                 type="email"
                                 placeholder="Enter email"
                                 value={email}
+                                autoComplete="username"
                                 onChange={e => setEmail(e.target.value)}  
                             />
                             <Form.Text className="text-muted">
@@ -70,6 +71,7 @@ const Signup = ({setToken}) => {
                                 type="password"
                                 placeholder="Password"
                                 value={password}
+                                autoComplete="new-password"
                                 onChange={e => setPassword(e.target.value)} 
                             />
                         </Form.Group>
@@ -80,6 +82,7 @@ const Signup = ({setToken}) => {
                                 type="password"
                                 placeholder="Password"
                                 value={password2}
+                                autoComplete="new-password"
                                 onChange={e => setPassword2(e.target.value)} 
                             />
                         </Form.Group>

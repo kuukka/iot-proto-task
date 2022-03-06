@@ -4,8 +4,14 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
+import useToken from '../Auth/useToken';
+import useUsername from '../Auth/useUsername';
 
 const Menu = () => {
+
+    const {token} = useToken();
+    const {username} = useUsername();
+
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
         <Container>
@@ -37,6 +43,15 @@ const Menu = () => {
                     </LinkContainer>
                 </NavDropdown>
             </Nav>
+            {token && 
+                <Nav className="">           
+                    <NavDropdown title={username ?? "user"} id="nav-dropdown-user">
+                        <LinkContainer to='/logout'>
+                                <NavDropdown.Item>Logout</NavDropdown.Item>
+                        </LinkContainer>
+                    </NavDropdown>
+                </Nav>
+            }
             </Navbar.Collapse>
         </Container>
         </Navbar>        

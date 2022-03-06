@@ -6,18 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Api from '../utils/Api';
 
-async function loginUser(credentials) {
-    return fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(credentials)
-    })
-    .then(data => data.json())
-}
-
-const Login = ({setToken}) => {
+const Login = ({setToken, setUsername}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     
@@ -31,12 +20,13 @@ const Login = ({setToken}) => {
         .then(data => data.json());
 
         setToken(token);
+        setUsername(token);
     }
 
     return (
         <Page>
             <Row className='mt-3'>
-                <Col xs={4}>
+                <Col xs={12} sm={8} md={6}>
                     <h1>Login</h1>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -45,6 +35,7 @@ const Login = ({setToken}) => {
                                 type="email"
                                 placeholder="Enter email"
                                 value={email}
+                                autoComplete="username"
                                 onChange={e => setEmail(e.target.value)}  
                             />
                             <Form.Text className="text-muted">
@@ -58,6 +49,7 @@ const Login = ({setToken}) => {
                                 type="password"
                                 placeholder="Password"
                                 value={password}
+                                autoComplete="current-password"
                                 onChange={e => setPassword(e.target.value)} 
                             />
                         </Form.Group>

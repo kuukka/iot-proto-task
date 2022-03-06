@@ -39,26 +39,14 @@ app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 
 
-app.get('/', (req, res) => {
-    res.json({
-        author: app.get('pkg').author,
-        name: app.get('pkg').name,
-        description: app.get('pkg').description,
-        version: app.get('pkg').version
-    })
-})
-
-// // defining an endpoint to return all ads
 // app.get('/', (req, res) => {
-//   res.send(ads);
-// });
-
-
-// app.post('/users', [UsersController.insert]);
-
-// app.get('/users', (req, res) => {
-//     const user = mongoose.model('Users', userSchema);
-// });
+//     res.json({
+//         author: app.get('pkg').author,
+//         name: app.get('pkg').name,
+//         description: app.get('pkg').description,
+//         version: app.get('pkg').version
+//     })
+// })
 
 // starting the server
 app.listen(process.env.PORT, () => {
