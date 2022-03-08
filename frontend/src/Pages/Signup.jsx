@@ -15,6 +15,8 @@ const Signup = ({setToken}) => {
     
     const handleSubmit = async e => {
         e.preventDefault();
+        
+        console.log("So what is it ?", process.env.MAGIC_WORD);
 
         if(magicword !== process.env.MAGIC_WORD) {
             alert("That's not the magic word")
