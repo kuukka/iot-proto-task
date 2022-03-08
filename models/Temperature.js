@@ -1,21 +1,21 @@
 const mongoose = require('mongoose');
 
 // Define schema
-const bookSchema = new mongoose.Schema({
-    name: {
+const tempSchema = new mongoose.Schema({
+    deviceName: {
         type: String,
         required: true,
         trim: true
     },
-    author: {
-        type: String,
+    date: {
+        type: Date,
         required: true,
         trim: true
     },
-    status: {
-        type: Boolean,
+    value: {
+        type: String,
         default: false
     }
 });
 
-module.exports = mongoose.model('Book', bookSchema);
+module.exports = mongoose.model('Temperature', tempSchema);

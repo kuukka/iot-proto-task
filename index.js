@@ -6,7 +6,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const authRoutes = require('./routes/auth.routes');
-const bookRoutes = require('./routes/book.routes');
+const temperatureRoutes = require('./routes/temperature.routes');
 const pkg = require('./package.json');
 const mongoose = require('./config/database');
 
@@ -36,7 +36,7 @@ app.use(morgan('combined'));
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/books', bookRoutes);
+app.use('/api/temperature', temperatureRoutes);
 
 
 // Rest goes to frontend
