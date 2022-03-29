@@ -13,7 +13,7 @@ const Menu = () => {
     const {username} = useUsername();
 
     return (
-        <Navbar bg="dark" variant="dark" expand="lg">
+        <Navbar bg="dark" variant="dark" expand="lg" className='top-menu'>
         <Container>
             <LinkContainer to='/'>
                 <Navbar.Brand>YAIOT</Navbar.Brand>
