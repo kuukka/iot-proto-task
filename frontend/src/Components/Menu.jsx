@@ -24,24 +24,28 @@ const Menu = () => {
                 <LinkContainer to='/'>
                     <Nav.Link>Home</Nav.Link>
                 </LinkContainer>
-                <LinkContainer to='/link'>
-                    <Nav.Link>Link</Nav.Link>
-                </LinkContainer>                
-                <NavDropdown title="Dropdown" id="basic-nav-dropdown">                
-                    <LinkContainer to='/action'>
-                        <NavDropdown.Item>Action</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to='/#action/3.2'>
-                        <NavDropdown.Item>Another action</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to='/#action/3.3'>
-                        <NavDropdown.Item>Something</NavDropdown.Item>
-                    </LinkContainer>
-                    <NavDropdown.Divider />
-                    <LinkContainer to='/#action/3.4'>
-                        <NavDropdown.Item>Separated link</NavDropdown.Item>
-                    </LinkContainer>
-                </NavDropdown>
+                {token && 
+                    <>
+                        <LinkContainer to='/devices'>
+                            <Nav.Link>Devices</Nav.Link>
+                        </LinkContainer>                
+                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">                
+                            <LinkContainer to='/action'>
+                                <NavDropdown.Item>Action</NavDropdown.Item>
+                            </LinkContainer>
+                            <LinkContainer to='/#action/3.2'>
+                                <NavDropdown.Item>Another action</NavDropdown.Item>
+                            </LinkContainer>
+                            <LinkContainer to='/#action/3.3'>
+                                <NavDropdown.Item>Something</NavDropdown.Item>
+                            </LinkContainer>
+                            <NavDropdown.Divider />
+                            <LinkContainer to='/#action/3.4'>
+                                <NavDropdown.Item>Separated link</NavDropdown.Item>
+                            </LinkContainer>
+                        </NavDropdown>                    
+                    </>
+                }
             </Nav>
             {token && 
                 <Nav className="">           

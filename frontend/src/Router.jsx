@@ -1,7 +1,7 @@
 import {Routes, Route, useLocation, Navigate} from "react-router-dom";
 
 import Home from './Pages/Home';
-import Test1 from './Pages/Test1';
+import Devices from './Pages/Devices';
 import Test2 from './Pages/Test2';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
@@ -30,7 +30,9 @@ const Router = () => {
                     ? <Navigate  to="/" />
                     : <Signup setToken={setToken} setUsername={setUsername} />
             }/>        
-            <Route path="/link" element={<Test1/>} />
+            <Route path="/devices" element={<Devices/>}>
+                <Route path=":device" element={<Devices/>} />                
+            </Route>
             <Route path="/action" element={<Test2/>} />
             <Route path="/logout" element={<Navigate to="/" />} /> 
         </Routes>
