@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Api from '../utils/Api';
+import {Link} from 'react-router-dom';
 
 const Login = ({setToken, setUsername}) => {
     const [email, setEmail] = useState("");
@@ -53,8 +54,10 @@ const Login = ({setToken, setUsername}) => {
                                 onChange={e => setPassword(e.target.value)} 
                             />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Check me out" />
+                        <Form.Group className='mb-2'>
+                            <Link to="/signup">
+                                <Form.Text>Signup</Form.Text>
+                            </Link>
                         </Form.Group>
                         <Button variant="primary" type="submit">
                             Submit

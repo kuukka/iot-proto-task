@@ -11,9 +11,15 @@ const Signup = ({setToken}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
+    const [magicword, setMagicWord] = useState("");
     
     const handleSubmit = async e => {
         e.preventDefault();
+        
+        if(magicword !== "XJGWP9C8k6YQuw94eSmrBGhC") {
+            alert("That's not the magic word")
+            return false;
+        }
 
         if(password !== password2) {
             alert("Passwords do not match!");
@@ -84,6 +90,17 @@ const Signup = ({setToken}) => {
                                 value={password2}
                                 autoComplete="new-password"
                                 onChange={e => setPassword2(e.target.value)} 
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formBasicMagicWord">
+                            <Form.Label>Magic word</Form.Label>
+                            <Form.Control 
+                                type="magic"
+                                placeholder="What is the magic word?"
+                                value={magicword}
+                                autoComplete="magic"
+                                onChange={e => setMagicWord(e.target.value)} 
                             />
                         </Form.Group>
               
