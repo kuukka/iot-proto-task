@@ -16,7 +16,7 @@ exports.verifyToken = async (req, res, next) => {
         })
         next();
     } catch (error) {
-        console.err(error)
+        console.log(error)
         return res.status(401).json({
             message: "Unauthorized"
         })
