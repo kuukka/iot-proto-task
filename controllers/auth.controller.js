@@ -20,7 +20,7 @@ exports.signUp = async (req, res) => {
     
         const savedUser = await newUser.save();
     
-        const newToken = jwt.sign({ id: savedUser._id }, 'secretKey', {
+        const newToken = jwt.sign({ id: savedUser._id }, process.env.SECRET_KEY, {
             expiresIn: 86400 // one day
         })
         res.status(200).json({ 
@@ -50,7 +50,7 @@ exports.logIn = async (req, res) => {
     })
     console.log(userExist)
 
-    const token = jwt.sign({ id: userExist._id }, 'secretKey', {
+    const token = jwt.sign({ id: userExist._id }, process.env.SECRET_KEY, {
         expiresIn: 86400
     })
 
