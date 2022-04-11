@@ -11,7 +11,7 @@ import Alert from 'react-bootstrap/Alert'
 const Login = ({setToken, setUsername}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loginError, setLoginError] = useState("Login error");
+    const [loginError, setLoginError] = useState(null);
 
     const handleSubmit = async e => {
         e.preventDefault();
