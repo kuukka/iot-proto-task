@@ -6,11 +6,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Api from '../utils/Api';
 import {Link} from 'react-router-dom';
+import Alert from 'react-bootstrap/Alert'
 
 const Login = ({setToken, setUsername}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    
+    const [loginError, setLoginError] = useState("Login error");
+
     const handleSubmit = async e => {
         e.preventDefault();
 
@@ -18,10 +20,23 @@ const Login = ({setToken, setUsername}) => {
             email,
             password
         }))
-        .then(data => data.json());
-
-        setToken(token);
-        setUsername(token);
+        .then(Api.handleError)
+        .then(data => data.json())
+        .catch(e => {
+            if(e.code === 401) {
+                setLoginError("Email or password incorrect, Please check login credentials.");
+            } else if(e.code === 400) {
+                setLoginError("Invalid credentials given. Please check login credentials.");
+            } else {
+                setLoginError("Error occured while processing login. Please contact site administration");
+            }
+            return null;
+        });
+        
+        if(token !== null) {
+            setToken(token);
+            setUsername(token);
+        }
     }
 
     return (
@@ -59,8 +74,13 @@ const Login = ({setToken, setUsername}) => {
                                 <Form.Text>Signup</Form.Text>
                             </Link>
                         </Form.Group>
+                        {loginError !== null &&
+                            <Alert variant="danger" onClose={() => setLoginError(null)} dismissible>                               
+                                {loginError}                                
+                            </Alert>                        
+                        }
                         <Button variant="primary" type="submit">
-                            Submit
+                            Login
                         </Button>
                     </Form>
                 </Col>

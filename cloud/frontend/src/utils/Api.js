@@ -17,6 +17,17 @@ const Api = {
             },
             body: body
         });
+    },
+    handleError: resp => {
+        if(!resp.ok) {
+            throw Api.exception(resp.statusText, resp.status);
+        }
+        return resp;
+    },    
+    exception: (message, code) => {
+        const error = new Error(message);
+        error.code = code;
+        return error;
     }
 }
 
