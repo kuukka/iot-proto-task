@@ -26,6 +26,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 
 app.use(express.static('build'));
+app.use(express.static('build/static'));
 
 // enabling CORS for all requests
 app.use(cors());
