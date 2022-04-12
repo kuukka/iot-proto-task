@@ -43,9 +43,9 @@ app.use('/api/temperature', temperatureRoutes);
 
 
 // Rest goes to frontend
-app.use('/', (req,res) =>{
-  res.sendFile(path.resolve('build', 'index.html'));
-});
+// app.use('/', (req,res) =>{
+//   res.sendFile(path.resolve('build', 'index.html'));
+// });
 
 // app.get('/', (req, res) => {
 //     res.json({
