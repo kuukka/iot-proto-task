@@ -27,7 +27,9 @@ app.use(bodyParser.json());
 
 app.use(express.static('build'));
 
-//app.use("/static", express.static('build/static'));
+app.use("/static", express.static('build/static'));
+app.use("/static/js", express.static('build/static/js'));
+app.use("/static/css", express.static('build/static/css'));
 
 // enabling CORS for all requests
 app.use(cors());
