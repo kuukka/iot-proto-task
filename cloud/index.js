@@ -25,8 +25,9 @@ app.use(helmet());
 // using bodyParser to parse JSON bodies into JS objects
 app.use(bodyParser.json());
 
-app.use(express.static('build/static'));
 app.use(express.static('build'));
+
+//app.use("/static", express.static('build/static'));
 
 // enabling CORS for all requests
 app.use(cors());
@@ -42,7 +43,7 @@ app.use('/api/temperature', temperatureRoutes);
 
 
 // Rest goes to frontend
-app.use('*', (req,res) =>{
+app.use('/', (req,res) =>{
   res.sendFile(path.resolve('build', 'index.html'));
 });
 
