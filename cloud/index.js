@@ -9,6 +9,7 @@ const authRoutes = require('./routes/auth.routes');
 const temperatureRoutes = require('./routes/temperature.routes');
 const pkg = require('./package.json');
 const mongoose = require('./config/database');
+const path = require('path');
 
 // defining the Express app
 const app = express();
