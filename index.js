@@ -7,6 +7,9 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const authRoutes = require('./routes/auth.routes');
 const temperatureRoutes = require('./routes/temperature.routes');
+const moistureRoutes = require('./routes/moisture.routes');
+const heartbeatRoutes = require('./routes/heartbeat.routes');
+const luminanceRoutes = require('./routes/luminance.routes');
 const pkg = require('./package.json');
 const mongoose = require('./config/database');
 
@@ -37,6 +40,9 @@ app.use(morgan('combined'));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/temperature', temperatureRoutes);
+app.use('/api/moisture', moistureRoutes);
+app.use('/api/heartbeat', heartbeatRoutes);
+app.use('/api/luminance', luminanceRoutes);
 
 
 // Rest goes to frontend
