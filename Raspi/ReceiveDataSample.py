@@ -33,8 +33,10 @@ def main():
         device.open()
 
         def data_receive_callback(xbee_message):
-            print("From %s >> %s" % (xbee_message.remote_device.get_64bit_addr(),
-                                     xbee_message.data.decode()))
+            address = str(xbee_message.remote_device.get_64bit_addr())
+            data = xbee_message.data.decode("utf8")
+            address8 = address[8:]
+            print("From %s >> %s" % (address8, data))
 
         device.add_data_received_callback(data_receive_callback)
 
