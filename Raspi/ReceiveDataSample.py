@@ -16,9 +16,9 @@
 
 from digi.xbee.devices import XBeeDevice
 
-# TODO: Replace with the serial port where your local module is connected to.
+# The serial port where the local XBee module is connected to
 PORT = '/dev/ttyS0'
-# TODO: Replace with the baud rate of your local module.
+# The baud rate of the local XBee module
 BAUD_RATE = 9600
 
 
@@ -34,9 +34,9 @@ def main():
 
         def data_receive_callback(xbee_message):
             address = str(xbee_message.remote_device.get_64bit_addr())
-            data = xbee_message.data.decode("utf8")
+            #data = xbee_message.data.decode()
             address8 = address[8:]
-            print("From %s >> %s" % (address8, data))
+            print("From %s >> %s" % (address8, xbee_message.data))
 
         device.add_data_received_callback(data_receive_callback)
 
