@@ -5,14 +5,14 @@ const router = express.Router();
 const heartbeatCtrl = require('../controllers/heartbeat.controller');
 const authToken = require('../middleware/authToken');
 
-router.get('/', heartbeatCtrl.findAllHearbeats);
+router.get('/', heartbeatCtrl.findAllHeartbeats);
 
-router.get('/:id', heartbeatCtrl.findOneHearbeat);
+router.get('/:id', heartbeatCtrl.findOneHeartbeat);
 
-router.post('/', [authToken.verifyToken], heartbeatCtrl.createHearbeat);
+router.post('/', [authToken.verifyToken], heartbeatCtrl.createHeartbeat);
 
-router.put('/:id', [authToken.verifyToken], heartbeatCtrl.updateHearbeat);
+router.put('/:id', [authToken.verifyToken], heartbeatCtrl.updateHeartbeat);
 
-router.delete('/:id', [authToken.verifyToken], heartbeatCtrl.deleteHearbeat);
+router.delete('/:id', [authToken.verifyToken], heartbeatCtrl.deleteHeartbeat);
 
 module.exports = router;
