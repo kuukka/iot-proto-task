@@ -61,7 +61,7 @@ XBee xbee = XBee();
 unsigned long start = millis();
 
 // allocate two bytes for to hold a 10-bit analog reading
-uint8_t payload[] = { 0, 0 };
+uint8_t payload[] = { 1, 2, 3, 4, 5, 6 };
 
 // with Series 1 you can use either 16-bit or 64-bit addressing
 
@@ -105,9 +105,9 @@ void loop() {
    // start transmitting after a startup delay.  Note: this will rollover to 0 eventually so not best way to handle
     if (millis() - start > 15000) {
       // break down 10-bit reading into two bytes and place in payload
-      pin5 = analogRead(5);
-      payload[0] = pin5 >> 8 & 0xff;
-      payload[1] = pin5 & 0xff;
+      //pin5 = analogRead(5);
+      //payload[0] = pin5 >> 8 & 0xff;
+      //payload[1] = pin5 & 0xff;
       
       xbee.send(tx);
 
