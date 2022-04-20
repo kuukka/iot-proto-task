@@ -92,7 +92,6 @@ const Devices = () => {
     if(devKey !== null) {
         console.log()
         
-        console.log("dev key", devKey)
         dataReal = {
             labels: temps[devKey].map((e) => e.date),
             datasets: [

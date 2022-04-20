@@ -29,7 +29,7 @@ const Menu = () => {
                         <LinkContainer to='/devices'>
                             <Nav.Link>Devices</Nav.Link>
                         </LinkContainer>                
-                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">                
+                        {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">                
                             <LinkContainer to='/action'>
                                 <NavDropdown.Item>Action</NavDropdown.Item>
                             </LinkContainer>
@@ -43,18 +43,29 @@ const Menu = () => {
                             <LinkContainer to='/#action/3.4'>
                                 <NavDropdown.Item>Separated link</NavDropdown.Item>
                             </LinkContainer>
-                        </NavDropdown>                    
+                        </NavDropdown>                     */}
                     </>
                 }
             </Nav>
             {token && 
-                <Nav className="">           
-                    <NavDropdown title={username ?? "user"} id="nav-dropdown-user">
-                        <LinkContainer to='/logout'>
-                                <NavDropdown.Item>Logout</NavDropdown.Item>
-                        </LinkContainer>
-                    </NavDropdown>
-                </Nav>
+                <>
+                    <Nav className="">           
+                    <NavDropdown title="Settings" id="basic-nav-dropdown">                
+                            <Nav className="">           
+                                <LinkContainer to='/patients'>
+                                    <NavDropdown.Item>Patients</NavDropdown.Item>                                
+                                </LinkContainer>
+                            </Nav>
+                        </NavDropdown>
+                    </Nav>
+                    <Nav className="">           
+                        <NavDropdown title={username ?? "user"} id="nav-dropdown-user">
+                            <LinkContainer to='/logout'>
+                                    <NavDropdown.Item>Logout</NavDropdown.Item>
+                            </LinkContainer>
+                        </NavDropdown>
+                    </Nav>
+                </>
             }
             </Navbar.Collapse>
         </Container>
