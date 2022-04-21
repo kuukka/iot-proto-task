@@ -1,54 +1,43 @@
-/*
-int led = 13;
-int toBeSent = 1234;
-int i;
-
-void setup() {
-  Serial.begin(9600); 
-  pinMode(led, OUTPUT);
-}
- 
-void loop() {
-  //if (Serial.available() > 0) {
-  Serial.println(toBeSent);
-  
-    if (received == 'a'){
-    digitalWrite(led, HIGH);
-    delay(2000);
-    digitalWrite(led, LOW);
-    }
-     else if (received == 'b'){
-      for(i=0;i<5;i++){
-    digitalWrite(led, HIGH);
-    delay(1000);
-    digitalWrite(led, LOW);
-    delay(5000);
-    //}
-  //} 
-}
-//}
-*/
-
-/**
- * Copyright (c) 2009 Andrew Rapp. All rights reserved.
- *
- * This file is part of XBee-Arduino.
- *
- * XBee-Arduino is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * XBee-Arduino is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with XBee-Arduino.  If not, see <http://www.gnu.org/licenses/>.
- */
- 
+#include <TH02_dev.h>
+#include <Wire.h>
+#include "Ultrasonic.h"
 #include <XBee.h>
+
+Ultrasonic ultrasonic(4);
+
+TH02_dev TH02;
+
+// installed sensors
+const bool lightSensor = true;
+const bool tempHumSensor = true;
+const bool distanceSensor = true;  
+const bool heartrateSensor = true;
+
+int read_light() {
+  return analogRead(A0);
+}
+
+byte heart_rate() {
+  byte c;
+  Wire.requestFrom(0xA0 >> 1, 1);    // request 1 bytes from slave device
+    while(Wire.available()) {          // slave may send less than requested
+       c = Wire.read();   // receive heart rate value (a byte)
+       //Serial.print(c, DEC);         // print heart rate value
+   }
+  return c;
+}
+
+float read_humidity() {
+  return TH02.ReadHumidity();
+}
+
+float read_temp() {
+  return TH02.ReadTemperature();
+}
+
+long read_dist() {
+  return ultrasonic.MeasureInCentimeters();
+}
 
 /*
 This example is for Series 1 XBee
@@ -61,7 +50,7 @@ XBee xbee = XBee();
 unsigned long start = millis();
 
 // allocate two bytes for to hold a 10-bit analog reading
-uint8_t payload[] = { 1, 2, 3, 4, 5, 6 };
+uint8_t payload[] = { 0, 0, 0, 0, 0, 0, 0 };
 
 // with Series 1 you can use either 16-bit or 64-bit addressing
 
@@ -93,9 +82,15 @@ void flashLed(int pin, int times, int wait) {
     }
 }
 
+
 void setup() {
+  // put your setup code here, to run once:
+  Wire.begin(); // Wire communication begin
+  
+  pinMode(A0,INPUT); // A0 for light sensor
   pinMode(statusLed, OUTPUT);
   pinMode(errorLed, OUTPUT);
+
   Serial.begin(9600);
   xbee.setSerial(Serial);
 }
@@ -104,10 +99,59 @@ void loop() {
    
    // start transmitting after a startup delay.  Note: this will rollover to 0 eventually so not best way to handle
     if (millis() - start > 15000) {
-      // break down 10-bit reading into two bytes and place in payload
-      //pin5 = analogRead(5);
-      //payload[0] = pin5 >> 8 & 0xff;
-      //payload[1] = pin5 & 0xff;
+
+      int amountOfLight = read_light();
+      byte lightByte = byte(amountOfLight);
+
+      float humidity = read_humidity();
+      byte humidityByte = byte(humidity);
+
+      float temperature = read_temp();
+      int temperatureInt = (int) 10*temperature;
+      byte tempHiByte = highByte(temperatureInt);
+      byte tempLoByte = lowByte(temperatureInt);
+
+      long distance = read_dist();
+      int distanceInt = (int) distance;
+      byte distHiByte = highByte(distanceInt);
+      byte distLoByte = lowByte(distanceInt);
+
+      byte heartrate = heart_rate();
+
+      // if a certain sensor is installed, the measurement is sent, otherwise 0xFF is sent
+      if(lightSensor){
+        payload[0] = lightByte;
+      }
+      else{
+        payload[0] = 0xFF;
+      }
+
+      if(tempHumSensor){
+        payload[1] = humidityByte;
+        payload[2] = tempLoByte;          // little-endian byte order (LSB first)
+        payload[3] = tempHiByte;
+      }
+      else{
+        payload[1] = 0xFF;
+        payload[2] = 0xFF;
+        payload[3] = 0xFF;
+      }
+
+      if(distanceSensor){
+        payload[4] = distLoByte;
+        payload[5] = distHiByte;
+      }
+      else{
+        payload[4] = 0xFF;
+        payload[5] = 0xFF;
+      }
+
+      if(heartrateSensor){
+        payload[6] = heartrate;
+      }
+      else{
+        payload[6] = 0xFF;
+      }
       
       xbee.send(tx);
 
@@ -142,5 +186,5 @@ void loop() {
       flashLed(errorLed, 2, 50);
     }
     
-    delay(1000);
+    delay(2000);
 }

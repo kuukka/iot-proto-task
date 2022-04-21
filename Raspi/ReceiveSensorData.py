@@ -15,6 +15,8 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 from digi.xbee.devices import XBeeDevice
+import time
+import ctypes
 
 # The serial port where the local XBee module is connected to
 PORT = '/dev/ttyS0'
@@ -35,8 +37,33 @@ def main():
         def data_receive_callback(xbee_message):
             address = str(xbee_message.remote_device.get_64bit_addr())
             #data = xbee_message.data.decode()
+            data = xbee_message.data
             address8 = address[8:]
-            print("From %s >> %s" % (address8, xbee_message.data))
+            
+            light_l = [0, 0]
+            light_l[0] = data[2]
+            light_l[1] = data[3]
+            light_arr = bytes(light_l)
+
+            dist_l = [0, 0]
+            dist_l[0] = data[4]
+            dist_l[1] = data[5]
+            dist_arr = bytes(dist_l)
+
+            timestamp = time.ctime(xbee_message.timestamp)
+ 
+            light = int.from_bytes(light_arr , "big")
+            dist = int.from_bytes(dist_arr, "big")
+            temp = ctypes.c_byte(data[0]).value
+            humidity = data[1]
+            
+            print("From %s || %s" % (address8, timestamp))
+            print(" Light: %s" % (light))
+            print(" Temperature: %s" % (temp))
+            print(" Humidity: %s" % (humidity))
+            print(" Distance: %s" % (dist))
+            
+            print()
 
         device.add_data_received_callback(data_receive_callback)
 

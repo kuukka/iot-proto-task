@@ -1,34 +1,3 @@
-/*
-int led = 13;
-int toBeSent = 1234;
-int i;
-
-void setup() {
-  Serial.begin(9600); 
-  pinMode(led, OUTPUT);
-}
- 
-void loop() {
-  //if (Serial.available() > 0) {
-  Serial.println(toBeSent);
-  
-    if (received == 'a'){
-    digitalWrite(led, HIGH);
-    delay(2000);
-    digitalWrite(led, LOW);
-    }
-     else if (received == 'b'){
-      for(i=0;i<5;i++){
-    digitalWrite(led, HIGH);
-    delay(1000);
-    digitalWrite(led, LOW);
-    delay(5000);
-    //}
-  //} 
-}
-//}
-*/
-
 /**
  * Copyright (c) 2009 Andrew Rapp. All rights reserved.
  *
@@ -49,6 +18,12 @@ void loop() {
  */
  
 #include <XBee.h>
+#include <TH02_dev.h>
+#include <Wire.h>
+#include "Ultrasonic.h"
+
+Ultrasonic ultrasonic(4);
+
 
 /*
 This example is for Series 1 XBee
@@ -77,7 +52,7 @@ TxStatusResponse txStatus = TxStatusResponse();
 
 int pin5 = 0;
 
-int statusLed = 11;
+int statusLed = 8;
 int errorLed = 12;
 
 void flashLed(int pin, int times, int wait) {
@@ -93,16 +68,8 @@ void flashLed(int pin, int times, int wait) {
     }
 }
 
-void setup() {
-  pinMode(statusLed, OUTPUT);
-  pinMode(errorLed, OUTPUT);
-  Serial.begin(9600);
-  xbee.setSerial(Serial);
-}
-
-void loop() {
-   
-   // start transmitting after a startup delay.  Note: this will rollover to 0 eventually so not best way to handle
+void transfer() {
+  // start transmitting after a startup delay.  Note: this will rollover to 0 eventually so not best way to handle
     if (millis() - start > 15000) {
       // break down 10-bit reading into two bytes and place in payload
       //pin5 = analogRead(5);
@@ -141,6 +108,59 @@ void loop() {
       // local XBee did not provide a timely TX Status Response.  Radio is not configured properly or connected
       flashLed(errorLed, 2, 50);
     }
-    
-    delay(1000);
+}
+
+uint16_t read_light() {
+  return analogRead(A0);
+}
+
+uint8_t read_humidity() {
+  return TH02.ReadHumidity();
+}
+
+int8_t read_temp() {
+  return TH02.ReadTemperature();
+}
+
+uint8_t  heart_rate() {
+  uint8_t  c;
+  Wire.requestFrom(0xA0 >> 1, 1);    // request 1 bytes from slave device
+    while(Wire.available()) {          // slave may send less than requested
+       c = Wire.read();   // receive heart rate value (a byte)
+       //Serial.print(c, DEC);         // print heart rate value
+   }
+  return c;
+}
+
+uint16_t read_dist() {
+  return ultrasonic.MeasureInCentimeters();
+}
+
+void setup() {
+  pinMode(statusLed, OUTPUT);
+  pinMode(errorLed, OUTPUT);
+  
+  Wire.begin(); // Wire communication begin
+  
+  pinMode(A0,INPUT); // A0 for light sensor
+  
+  Serial.begin(9600);
+  xbee.setSerial(Serial);
+}
+
+void loop() {
+
+    payload[0] = read_temp();
+    payload[1] = read_humidity();
+
+    uint16_t light = read_light();
+    payload[2] = highByte(light);
+    payload[3] = lowByte(light);
+
+    uint16_t dist = read_dist();
+    payload[4] = highByte(dist);
+    payload[5] = lowByte(dist);
+
+    transfer();
+    delay(5000);
 }
