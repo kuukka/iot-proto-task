@@ -10,6 +10,11 @@ Ultrasonic ultrasonic(4);
 
 TH02_dev TH02;
 
+// installed sensors
+const bool lightSensor = true;
+const bool tempHumSensor = true;
+const bool distanceSensor = true;  
+
 int read_light() {
   return analogRead(A0);
 }
@@ -112,13 +117,34 @@ void loop() {
       int distanceInt = (int) distance;
       byte distHiByte = highByte(distanceInt);
       byte distLoByte = lowByte(distanceInt);
-      
-      payload[0] = lightByte;
-      payload[1] = humidityByte;
-      payload[2] = tempLoByte;          // little-endian byte order (LSB first)
-      payload[3] = tempHiByte;
-      payload[4] = distLoByte;
-      payload[5] = distHiByte;
+
+      // if a certain sensor is installed, the measurement is sent, otherwise 0xFF is sent
+      if(lightSensor){
+        payload[0] = lightByte;
+      }
+      else{
+        payload[0] = 0xFF;
+      }
+
+      if(tempHumSensor){
+        payload[1] = humidityByte;
+        payload[2] = tempLoByte;          // little-endian byte order (LSB first)
+        payload[3] = tempHiByte;
+      }
+      else{
+        payload[1] = 0xFF;
+        payload[2] = 0xFF;
+        payload[3] = 0xFF;
+      }
+
+      if(distanceSensor){
+        payload[4] = distLoByte;
+        payload[5] = distHiByte;
+      }
+      else{
+        payload[4] = 0xFF;
+        payload[5] = 0xFF;
+      }
       
       xbee.send(tx);
 
