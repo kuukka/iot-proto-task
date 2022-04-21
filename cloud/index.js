@@ -10,6 +10,8 @@ const temperatureRoutes = require('./routes/temperature.routes');
 const moistureRoutes = require('./routes/moisture.routes');
 const heartbeatRoutes = require('./routes/heartbeat.routes');
 const luminanceRoutes = require('./routes/luminance.routes');
+const deviceRoutes = require('./routes/device.routes');
+const patientRoutes = require('./routes/patient.routes');
 const pkg = require('./package.json');
 const mongoose = require('./config/database');
 const path = require('path');
@@ -33,6 +35,7 @@ app.use(express.static('build'));
 // enabling CORS for all requests
 app.use(cors());
 
+
 // adding morgan to log HTTP requests
 app.use(morgan('combined'));
 
@@ -40,10 +43,12 @@ app.use(morgan('combined'));
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/temperature', temperatureRoutes);
-app.use('/api/moisture', moistureRoutes);
-app.use('/api/heartbeat', heartbeatRoutes);
-app.use('/api/luminance', luminanceRoutes);
+app.use('/api/temperatures', temperatureRoutes);
+app.use('/api/moistures', moistureRoutes);
+app.use('/api/heartbeats', heartbeatRoutes);
+app.use('/api/luminances', luminanceRoutes);
+app.use('/api/devices', deviceRoutes);
+app.use('/api/patients', patientRoutes);
 
 
 // Rest goes to frontend

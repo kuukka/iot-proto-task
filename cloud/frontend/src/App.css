@@ -1,3 +1,11 @@
 .main-container {
   padding-top: 0.5rem;
 }
+
+.sensorList {
+  list-style-type: '- ';
+}
+
+.form-label {
+  font-weight: 600;
+}

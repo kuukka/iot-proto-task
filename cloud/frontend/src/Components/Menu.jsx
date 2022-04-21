@@ -28,32 +28,22 @@ const Menu = () => {
                     <>
                         <LinkContainer to='/devices'>
                             <Nav.Link>Devices</Nav.Link>
-                        </LinkContainer>                
-                        {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">                
-                            <LinkContainer to='/action'>
-                                <NavDropdown.Item>Action</NavDropdown.Item>
-                            </LinkContainer>
-                            <LinkContainer to='/#action/3.2'>
-                                <NavDropdown.Item>Another action</NavDropdown.Item>
-                            </LinkContainer>
-                            <LinkContainer to='/#action/3.3'>
-                                <NavDropdown.Item>Something</NavDropdown.Item>
-                            </LinkContainer>
-                            <NavDropdown.Divider />
-                            <LinkContainer to='/#action/3.4'>
-                                <NavDropdown.Item>Separated link</NavDropdown.Item>
-                            </LinkContainer>
-                        </NavDropdown>                     */}
+                        </LinkContainer>
                     </>
                 }
             </Nav>
             {token && 
                 <>
                     <Nav className="">           
-                    <NavDropdown title="Settings" id="basic-nav-dropdown">                
+                        <NavDropdown title="Settings" id="basic-nav-dropdown">                
                             <Nav className="">           
-                                <LinkContainer to='/patients'>
+                                <LinkContainer to='/settings/patients'>
                                     <NavDropdown.Item>Patients</NavDropdown.Item>                                
+                                </LinkContainer>
+                            </Nav>
+                            <Nav className="">           
+                                <LinkContainer to='/settings/devices'>
+                                    <NavDropdown.Item>Devices</NavDropdown.Item>                                
                                 </LinkContainer>
                             </Nav>
                         </NavDropdown>

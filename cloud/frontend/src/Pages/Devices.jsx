@@ -18,7 +18,7 @@ const Devices = () => {
     const [devs, setDevices] = useState([]);
 
     useEffect(() => {
-        Api.get('/api/temperature')
+        Api.get('/api/temperatures')
         .then(data => data.json())
         .then(json => {
             let grouped = {};
@@ -35,7 +35,6 @@ const Devices = () => {
                     value: parseFloat(item.value, 10)
                 });                
             })
-            console.log(grouped);
             
             let devId = 4;
             devices = Object.keys(grouped).map( d => ({name: d, id: devId++, type: "temp"}));
@@ -90,7 +89,6 @@ const Devices = () => {
     const devKey = devs.reduce( (prev, cur) => cur.id === parseInt(params.device, 10) ? cur.name : prev, null);
     
     if(devKey !== null) {
-        console.log()
         
         dataReal = {
             labels: temps[devKey].map((e) => e.date),

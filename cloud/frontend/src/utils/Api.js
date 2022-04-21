@@ -9,12 +9,26 @@ const Api = {
             }            
         });
     },
-    post: async (path, body) => {
+    post: async (path, body, headers) => {
+        const head = {
+            ...headers,
+            'Content-Type': 'application/json'
+        }
         return fetch(urlBase + path, {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
+            headers: head,
+            body: body
+        });
+    },
+    put: async (path, body, headers) => {
+        const head = {
+            ...headers,
+            'Content-Type': 'application/json'
+        }
+
+        return fetch(urlBase + path, {
+            method: 'PUT',
+            headers: head,
             body: body
         });
     },
