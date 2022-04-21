@@ -12,6 +12,7 @@ const heartbeatRoutes = require('./routes/heartbeat.routes');
 const luminanceRoutes = require('./routes/luminance.routes');
 const deviceRoutes = require('./routes/device.routes');
 const patientRoutes = require('./routes/patient.routes');
+const readingRoutes = require('./routes/reading.routes');
 const pkg = require('./package.json');
 const mongoose = require('./config/database');
 const path = require('path');
@@ -49,6 +50,7 @@ app.use('/api/heartbeats', heartbeatRoutes);
 app.use('/api/luminances', luminanceRoutes);
 app.use('/api/devices', deviceRoutes);
 app.use('/api/patients', patientRoutes);
+app.use('/api/readings', readingRoutes);
 
 
 // Rest goes to frontend

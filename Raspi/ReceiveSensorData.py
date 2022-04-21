@@ -17,6 +17,7 @@
 from digi.xbee.devices import XBeeDevice
 import time
 import ctypes
+from Backend import sendReading
 
 # The serial port where the local XBee module is connected to
 PORT = '/dev/ttyS0'
@@ -64,6 +65,9 @@ def main():
             print(" Distance: %s" % (dist))
             
             print()
+
+            # To cloud we go
+            sendReading(address8, timestamp, light, temp, humidity, dist) 
 
         device.add_data_received_callback(data_receive_callback)
 

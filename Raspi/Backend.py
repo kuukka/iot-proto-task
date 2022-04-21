@@ -63,3 +63,27 @@ def sendTemp(name, temp):
         resp = json.dumps(x.json())
         response = json.loads(resp)
         print(response)
+
+def sendReading(name, timestamp, light, temperature, humidity, distance):
+    
+    try:        
+        d = datetime.strptime(timestamp, "%a %b %d %H:%M:%S %Y")
+    except (ValueError, TypeError, AttributeError):    
+        d = datetime.now()
+
+    head = {'x-access-token': token}
+    body = {
+        "deviceName": name,
+        "timestamp": d.strftime("%Y-%m-%d %H:%M:%S.%f"),
+        "light": light,
+        "temperature": temperature,
+        "humidity": humidity,
+        "distance": distance
+    }
+       
+    x = requests.post(baseUrl+"api/readings", json=body, headers=head)
+
+    if x.status_code == 200:        
+        resp = json.dumps(x.json())
+        response = json.loads(resp)
+        print(response)
