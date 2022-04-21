@@ -1,7 +1,4 @@
 #include <TH02_dev.h>
-#include <TH06_dev.h>
-#include <THSensor_base.h>
-
 #include <Wire.h>
 #include "Ultrasonic.h"
 #include <XBee.h>
@@ -14,13 +11,14 @@ TH02_dev TH02;
 const bool lightSensor = true;
 const bool tempHumSensor = true;
 const bool distanceSensor = true;  
+const bool heartrateSensor = true;
 
 int read_light() {
   return analogRead(A0);
 }
 
-unsigned char heart_rate() {
-  unsigned char c;
+byte heart_rate() {
+  byte c;
   Wire.requestFrom(0xA0 >> 1, 1);    // request 1 bytes from slave device
     while(Wire.available()) {          // slave may send less than requested
        c = Wire.read();   // receive heart rate value (a byte)
@@ -52,7 +50,7 @@ XBee xbee = XBee();
 unsigned long start = millis();
 
 // allocate two bytes for to hold a 10-bit analog reading
-uint8_t payload[] = { 0, 0, 0, 0, 0, 0 };
+uint8_t payload[] = { 0, 0, 0, 0, 0, 0, 0 };
 
 // with Series 1 you can use either 16-bit or 64-bit addressing
 
@@ -118,6 +116,8 @@ void loop() {
       byte distHiByte = highByte(distanceInt);
       byte distLoByte = lowByte(distanceInt);
 
+      byte heartrate = heart_rate();
+
       // if a certain sensor is installed, the measurement is sent, otherwise 0xFF is sent
       if(lightSensor){
         payload[0] = lightByte;
@@ -144,6 +144,13 @@ void loop() {
       else{
         payload[4] = 0xFF;
         payload[5] = 0xFF;
+      }
+
+      if(heartrateSensor){
+        payload[6] = heartrate;
+      }
+      else{
+        payload[6] = 0xFF;
       }
       
       xbee.send(tx);
@@ -179,5 +186,5 @@ void loop() {
       flashLed(errorLed, 2, 50);
     }
     
-    delay(1000);
+    delay(2000);
 }
