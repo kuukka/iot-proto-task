@@ -96,18 +96,29 @@ void loop() {
    
    // start transmitting after a startup delay.  Note: this will rollover to 0 eventually so not best way to handle
     if (millis() - start > 15000) {
-      // break down 10-bit reading into two bytes and place in payload
-      //pin5 = analogRead(5);
-      //payload[0] = pin5 >> 8 & 0xff;
-      //payload[1] = pin5 & 0xff;
 
-      payload[0] = 0;
-      payload[1] = 0;
-      payload[2] = 0;
-      payload[3] = 0;
-      payload[4] = 0;
-      payload[5] = 0;
+      int amountOfLight = read_light();
+      byte lightByte = byte(amountOfLight);
 
+      float humidity = read_humidity();
+      byte humidityByte = byte(humidity);
+
+      float temperature = read_temp();
+      int temperatureInt = (int) 10*temperature;
+      byte tempHiByte = highByte(temperatureInt);
+      byte tempLoByte = lowByte(temperatureInt);
+
+      long distance = read_dist();
+      int distanceInt = (int) distance;
+      byte distHiByte = highByte(distanceInt);
+      byte distLoByte = lowByte(distanceInt);
+      
+      payload[0] = lightByte;
+      payload[1] = humidityByte;
+      payload[2] = tempLoByte;          // little-endian byte order (LSB first)
+      payload[3] = tempHiByte;
+      payload[4] = distLoByte;
+      payload[5] = distHiByte;
       
       xbee.send(tx);
 
