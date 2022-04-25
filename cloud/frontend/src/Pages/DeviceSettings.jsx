@@ -22,7 +22,8 @@ const DeviceSettings = () => {
         sensorLuminance: false,
         sensorTemperature: false,
         sensorMoisture: false,
-        sensorHeartbeat: false
+        sensorHeartbeat: false,
+        sensorDistance: false
     });
 
     const selDevice = params.device || "new";
@@ -50,7 +51,8 @@ const DeviceSettings = () => {
             sensorLuminance: false,
             sensorTemperature: false,
             sensorMoisture: false,
-            sensorHeartbeat: false
+            sensorHeartbeat: false,
+            sensorDistance: false
         });
     }
     const handleSaveDevice = () => {

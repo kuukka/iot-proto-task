@@ -2,9 +2,12 @@ const Reading = require('../models/Reading');
 
 exports.findAllReadings = async (req, res) => {
     try {
-        const { name } = req.name;
-        const search = name ? `{name=${name}}`: "{}"
-        const readings = await Reading.find(search);
+        const { name, limit } = req.query;
+        console.log("name", name, req.params)
+        const search = name ? {deviceName: name} : undefined
+        const qLimit = limit ? parseInt(limit, 10) : 0
+        console.log("search", search)
+        const readings = await Reading.find(search).limit(qLimit);
         res.json(readings)
     } catch (error) {
         res.status(500).json({

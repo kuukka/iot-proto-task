@@ -26,8 +26,8 @@ const Menu = () => {
                 </LinkContainer>
                 {token && 
                     <>
-                        <LinkContainer to='/devices'>
-                            <Nav.Link>Devices</Nav.Link>
+                        <LinkContainer to='/readings'>
+                            <Nav.Link>Readings</Nav.Link>
                         </LinkContainer>
                     </>
                 }

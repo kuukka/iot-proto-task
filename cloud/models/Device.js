@@ -27,6 +27,10 @@ const deviceSchema = new mongoose.Schema({
     sensorHeartbeat: {
         type: Boolean,
         required: true        
+    },
+    sensorDistance: {
+        type: Boolean,
+        required: true        
     }
 });
 

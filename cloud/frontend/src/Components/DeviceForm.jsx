@@ -39,6 +39,7 @@ const DeviceForm = ({data, setData, readOnly}) => {
               <li>Humidity: {data.sensorHumiditiy === true ? "yes": "no"}</li>
               <li>Luminance: {data.sensorLuminance === true ? "yes": "no"}</li>
               <li>HeartBeat: {data.sensorHeartbeat === true ? "yes": "no"}</li>
+              <li>Distance: {data.sensorDistance === true ? "yes": "no"}</li>
             </ul>
           </Form.Group>
         </Col>
@@ -101,6 +102,14 @@ const DeviceForm = ({data, setData, readOnly}) => {
             id="hb-switch"
             label="Heartbeat"
             checked={data.sensorHeartbeat === true}
+            onChange={onCbChange}
+          />
+          <Form.Check 
+            name="sensorDistance"
+            type="switch"
+            id="hb-switch"
+            label="Distance"
+            checked={data.sensorDistance === true}
             onChange={onCbChange}
           />
         </Form.Group>

@@ -19,7 +19,8 @@ exports.createDevice = async (req, res) => {
             sensorLuminance: req.body.sensorLuminance,
             sensorTemperature: req.body.sensorTemperature,
             sensorMoisture: req.body.sensorMoisture,
-            sensorHeartbeat: req.body.sensorHeartbeat
+            sensorHeartbeat: req.body.sensorHeartbeat,
+            sensorDistance: req.body.sensorDistance
         });
         const deviceSaved = await newDevice.save();
         res.json(deviceSaved)

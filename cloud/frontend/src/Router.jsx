@@ -1,7 +1,7 @@
 import {Routes, Route, useLocation, Navigate} from "react-router-dom";
 
 import Home from './Pages/Home';
-import Devices from './Pages/Devices';
+import Readings from './Pages/Readings';
 import DeviceSettings from './Pages/DeviceSettings';
 import Patients from './Pages/Patients';
 import Login from './Pages/Login';
@@ -31,8 +31,8 @@ const Router = () => {
                     ? <Navigate  to="/" />
                     : <Signup setToken={setToken} setUsername={setUsername} />
             }/>     
-            <Route path="devices" element={<Devices/>}>
-                <Route path=":device" element={<Devices/>} />                
+            <Route path="readings" element={<Readings/>}>
+                <Route path=":device" element={<Readings/>} />                
             </Route>
             <Route path="/settings">
                 <Route path="devices" element={<DeviceSettings/>}>
