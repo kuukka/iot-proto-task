@@ -65,7 +65,7 @@ def main():
             print(" Humidity: %s" % (humidity))
             print(" Distance: %s" % (dist))
             
-            print()
+            #print()
 
             # To cloud we go
             sendReading(address8, timestamp, light, temp, humidity, dist, heartbeat) 

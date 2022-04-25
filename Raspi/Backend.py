@@ -68,6 +68,7 @@ def sendReading(name, timestamp, light, temperature, humidity, distance, heartbe
         d = datetime.strptime(timestamp, "%a %b %d %H:%M:%S %Y")
     except (ValueError, TypeError, AttributeError):    
         d = datetime.now()
+        print("väärin meni")
 
     head = {'x-access-token': token}
     body = {
@@ -86,3 +87,4 @@ def sendReading(name, timestamp, light, temperature, humidity, distance, heartbe
         resp = json.dumps(x.json())
         response = json.loads(resp)
         print(response)
+        print()
