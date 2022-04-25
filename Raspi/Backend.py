@@ -49,10 +49,8 @@ def getToken():
 
     return token
 
-token = getToken()
-
-
 def sendTemp(name, temp):
+    token = getToken()
     now = datetime.now()
     head = {'x-access-token': token}
     body = {"deviceName": name, "date": now.strftime("%Y-%m-%d %H:%M:%S.%f"), "value": temp}
@@ -65,7 +63,7 @@ def sendTemp(name, temp):
         print(response)
 
 def sendReading(name, timestamp, light, temperature, humidity, distance, heartbeat):
-    
+    token = getToken()
     try:        
         d = datetime.strptime(timestamp, "%a %b %d %H:%M:%S %Y")
     except (ValueError, TypeError, AttributeError):    
