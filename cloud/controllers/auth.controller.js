@@ -35,7 +35,6 @@ exports.signUp = async (req, res) => {
 }
 
 exports.logIn = async (req, res) => {
-    console.log(req.body);
     const userExist = await User.findOne({ email: req.body.email });
 
     if (!userExist) return res.status(400).json({
