@@ -24,6 +24,7 @@
 
 Ultrasonic ultrasonic(4);
 
+TH02_dev TH02;
 
 /*
 This example is for Series 1 XBee
@@ -36,7 +37,7 @@ XBee xbee = XBee();
 unsigned long start = millis();
 
 // allocate two bytes for to hold a 10-bit analog reading
-uint8_t payload[] = { 1, 2, 3, 4, 5, 6 };
+uint8_t payload[] = { 0, 0, 0, 0, 0, 0, 0 };
 
 // with Series 1 you can use either 16-bit or 64-bit addressing
 
@@ -161,6 +162,8 @@ void loop() {
     payload[4] = highByte(dist);
     payload[5] = lowByte(dist);
 
+    payload[6] = heart_rate();
+    
     transfer();
     delay(5000);
 }

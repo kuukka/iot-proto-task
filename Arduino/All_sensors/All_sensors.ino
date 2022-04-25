@@ -4,6 +4,8 @@
 
 Ultrasonic ultrasonic(4);
 
+TH02_dev TH02;
+
 void setup() {
   // put your setup code here, to run once:
   Wire.begin(); // Wire communication begin
