@@ -2,7 +2,9 @@ const Reading = require('../models/Reading');
 
 exports.findAllReadings = async (req, res) => {
     try {
-        const readings = await Reading.find();
+        const { name } = req.name;
+        const search = name ? `{name=${name}}`: "{}"
+        const readings = await Reading.find(search);
         res.json(readings)
     } catch (error) {
         res.status(500).json({
@@ -12,7 +14,7 @@ exports.findAllReadings = async (req, res) => {
 };
 
 exports.createReading = async (req, res) => {
-    try {        
+    try {               
         const newReading = new Reading({
             deviceName: req.body.deviceName,
             timestamp: req.body.timestamp,
