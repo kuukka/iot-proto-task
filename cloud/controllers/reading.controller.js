@@ -18,15 +18,14 @@ exports.createReading = async (req, res) => {
             timestamp: req.body.timestamp,
             light: req.body.light,
             temperature: req.body.temperature,
+            heartbeat: req.body.heartbeat,
             humidity: req.body.humidity,
             distance: req.body.distance
         });
 
         const readingSaved = await newReading.save();
-        console.log(readingSaved);
         res.json(readingSaved)
     } catch (error) {
-        console.log(error)
         res.status(500).json({
             message: error.message || "Something goes wrong creating a reading"
         })

@@ -22,6 +22,11 @@ const readSchema = new mongoose.Schema({
         trim: true,
         default: ""
     },
+    heartbeat: {
+        type: String,        
+        trim: true,
+        default: ""
+    },
     humidity: {
         type: String,        
         trim: true,

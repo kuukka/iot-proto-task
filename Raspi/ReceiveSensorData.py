@@ -57,6 +57,7 @@ def main():
             dist = int.from_bytes(dist_arr, "big")
             temp = ctypes.c_byte(data[0]).value
             humidity = data[1]
+            heartbeat = 0 # Todo
             
             print("From %s || %s" % (address8, timestamp))
             print(" Light: %s" % (light))
@@ -67,7 +68,7 @@ def main():
             print()
 
             # To cloud we go
-            sendReading(address8, timestamp, light, temp, humidity, dist) 
+            sendReading(address8, timestamp, light, temp, humidity, dist, heartbeat) 
 
         device.add_data_received_callback(data_receive_callback)
 

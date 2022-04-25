@@ -64,7 +64,7 @@ def sendTemp(name, temp):
         response = json.loads(resp)
         print(response)
 
-def sendReading(name, timestamp, light, temperature, humidity, distance):
+def sendReading(name, timestamp, light, temperature, humidity, distance, heartbeat):
     
     try:        
         d = datetime.strptime(timestamp, "%a %b %d %H:%M:%S %Y")
@@ -77,6 +77,7 @@ def sendReading(name, timestamp, light, temperature, humidity, distance):
         "timestamp": d.strftime("%Y-%m-%d %H:%M:%S.%f"),
         "light": light,
         "temperature": temperature,
+        "heartbeat": heartbeat,
         "humidity": humidity,
         "distance": distance
     }

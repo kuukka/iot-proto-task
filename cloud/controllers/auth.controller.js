@@ -30,7 +30,6 @@ exports.signUp = async (req, res) => {
             token: newToken
         })
     } catch (e) {
-        console.log(e)
         res.status(200).json(["error" ])
     }    
 }
