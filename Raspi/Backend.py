@@ -86,5 +86,5 @@ def sendReading(name, timestamp, light, temperature, humidity, distance, heartbe
     if x.status_code == 200:        
         resp = json.dumps(x.json())
         response = json.loads(resp)
-        print(response)
-        print()
+        #print(response)
+        #print()

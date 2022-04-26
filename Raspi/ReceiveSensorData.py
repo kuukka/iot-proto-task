@@ -41,10 +41,23 @@ def main():
             data = xbee_message.data
             address8 = address[8:]
             
-            light_l = [0, 0]
-            light_l[0] = data[2]
-            light_l[1] = data[3]
-            light_arr = bytes(light_l)
+            #byte 0: light
+            #byte 1: humidity
+            #byte 2: temperature LSB
+            #byte 3: temperature MSB
+            #byte 4: distance LSB
+            #byte 5: distance MSB
+            #byte 6: heartrate
+            
+            #light_l = [0, 0]
+            #light_l[0] = data[2]
+            #light_l[1] = data[3]
+            #light_arr = bytes(light_l)
+
+            temp_l = [0, 0]
+            temp_l[0] = data[2]
+            temp_l[1] = data[3]
+            temp_arr = bytes(temp_l)
 
             dist_l = [0, 0]
             dist_l[0] = data[4]
@@ -53,22 +66,27 @@ def main():
 
             timestamp = time.ctime(xbee_message.timestamp)
  
-            light = int.from_bytes(light_arr , "big")
-            dist = int.from_bytes(dist_arr, "big")
-            temp = ctypes.c_byte(data[0]).value
-            humidity = data[1]
-            heartbeat = 0 # Todo
+            #light = int.from_bytes(light_arr , "big")
+            light = data[0]
+            dist = int.from_bytes(dist_arr, "little")
+            #temp = ctypes.c_byte(data[0]).value
+            temp = int.from_bytes(temp_arr, "little")
+            temperature = temp/10
+            humidity = ctypes.c_byte(data[1]).value
+            heartbeat = data[6]
             
+            print()
             print("From %s || %s" % (address8, timestamp))
             print(" Light: %s" % (light))
-            print(" Temperature: %s" % (temp))
+            print(" Temperature: %s" % (temperature))
             print(" Humidity: %s" % (humidity))
             print(" Distance: %s" % (dist))
+            print(" Heart rate: %s" % (heartbeat))
             
             #print()
 
             # To cloud we go
-            sendReading(address8, timestamp, light, temp, humidity, dist, heartbeat) 
+            sendReading(address8, timestamp, light, temperature, humidity, dist, heartbeat) 
 
         device.add_data_received_callback(data_receive_callback)
 
