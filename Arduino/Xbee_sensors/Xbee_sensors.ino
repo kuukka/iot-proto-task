@@ -16,6 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with XBee-Arduino.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#define ARDUINO1    1     // comment out this line when compiling for Arduino #2
+                          // Arduino 1 is with 5E Xbee and Arduino 2 with 82 Xbee
+#if defined(ARDUINO1)
+    // installed sensors
+    const bool lightSensor = false;
+    const bool tempHumSensor = true;
+    const bool distanceSensor = false;  
+    const bool heartrateSensor = true;
+#else
+    const bool lightSensor = true;
+    const bool tempHumSensor = true;
+    const bool distanceSensor = true;  
+    const bool heartrateSensor = false;
+#endif      
+
+#define MESSAGE_INTERVAL  10000   // in milliseconds
  
 #include <XBee.h>
 #include <TH02_dev.h>
@@ -111,15 +128,15 @@ void transfer() {
     }
 }
 
-uint16_t read_light() {
+int read_light() {
   return analogRead(A0);
 }
 
-uint8_t read_humidity() {
+float read_humidity() {
   return TH02.ReadHumidity();
 }
 
-int8_t read_temp() {
+float read_temp() {
   return TH02.ReadTemperature();
 }
 
@@ -133,7 +150,7 @@ uint8_t  heart_rate() {
   return c;
 }
 
-uint16_t read_dist() {
+long read_dist() {
   return ultrasonic.MeasureInCentimeters();
 }
 
@@ -142,6 +159,7 @@ void setup() {
   pinMode(errorLed, OUTPUT);
   
   Wire.begin(); // Wire communication begin
+  TH02.begin();
   
   pinMode(A0,INPUT); // A0 for light sensor
   
@@ -151,19 +169,79 @@ void setup() {
 
 void loop() {
 
-    payload[0] = read_temp();
-    payload[1] = read_humidity();
+    //float humidity = read_humidity();
+    //byte humidityByte = byte(read_humidity());
 
-    uint16_t light = read_light();
-    payload[2] = highByte(light);
-    payload[3] = lowByte(light);
+    //float temperature = read_temp();
+    //int temperatureInt = (int) 10*temperature;
+    //byte tempHiByte = highByte(temperatureInt);
+    //byte tempLoByte = lowByte(temperatureInt);
 
-    uint16_t dist = read_dist();
-    payload[4] = highByte(dist);
-    payload[5] = lowByte(dist);
+    //payload[0] = read_temp();
+    //payload[1] = humidityByte;
 
-    payload[6] = heart_rate();
+    //uint16_t light = read_light();
+    //payload[2] = highByte(light);
+    //payload[3] = lowByte(light);
+    //uint16_t dist = read_dist();
+    //payload[4] = highByte(dist);
+    //payload[5] = lowByte(dist);
+    //payload[6] = heart_rate();
+
+    //int amountOfLight = read_light();
+    int amountOfLight = read_light();
+    byte lightByte = byte(amountOfLight);
+
+    //float humidity = read_humidity();
+    byte humidityByte = byte(read_humidity());
+
+    //float temperature = read_temp();
+    int temperatureInt = (int) 10*read_temp();
+    byte tempHiByte = highByte(temperatureInt);
+    byte tempLoByte = lowByte(temperatureInt);
+
+    //long distance = read_dist();
+    int distanceInt = (int) read_dist();
+    byte distHiByte = highByte(distanceInt);
+    byte distLoByte = lowByte(distanceInt);
+
+    byte heartrate = heart_rate();
+
+    // if a certain sensor is installed, the measurement is sent, otherwise 0xFF is sent
+    if(lightSensor){
+      payload[0] = lightByte;
+    }
+    else{
+      payload[0] = 0xFF;
+    }
+
+    if(tempHumSensor){
+      payload[1] = humidityByte;
+      payload[2] = tempLoByte;          // little-endian byte order (LSB first)
+      payload[3] = tempHiByte;
+    }
+    else{
+      payload[1] = 0xFF;
+      payload[2] = 0xFF;
+      payload[3] = 0xFF;
+    }
+
+    if(distanceSensor){
+      payload[4] = distLoByte;
+      payload[5] = distHiByte;
+    }
+    else{
+      payload[4] = 0xFF;
+      payload[5] = 0xFF;
+    }
+
+    if(heartrateSensor){
+      payload[6] = heartrate;
+    }
+    else{
+      payload[6] = 0xFF;
+    }
     
     transfer();
-    delay(5000);
+    delay(MESSAGE_INTERVAL);
 }
