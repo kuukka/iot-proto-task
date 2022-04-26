@@ -89,10 +89,11 @@ const Devices = () => {
         if(readings && readings.length > 0 && selPatientDevice[sensorType.key] === true) {
             const data = {
                 labels: readings.map(e => {
-                    const dt = addHours(e.timestamp, 3);
+                    const dt = addHours(e.timestamp, -3);
                     const hours = ("0"+ dt.getHours() ).slice(-2);
                     const minutes = ("0" + dt.getMinutes()).slice(-2);
-                    const timeStr = `${hours}.${minutes}`;
+                    const seconds = ("0" + dt.getSeconds()).slice(-2);
+                    const timeStr = `${hours}:${minutes}:${seconds}`;
                     return timeStr
                 }),
                 datasets: [
