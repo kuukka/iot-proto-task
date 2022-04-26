@@ -10,12 +10,13 @@ import Api from '../utils/Api';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMicrochip } from '@fortawesome/free-solid-svg-icons'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const Devices = () => {
     const [devs, setDevices] = useState([]);
     const [patients, setPatients] = useState([]);
     const [readings, setReadings] = useState(null);
+    const timerRef = useRef();
     const params = useParams();
 
     const selPatientId = params.device || "new";
@@ -43,33 +44,32 @@ const Devices = () => {
         .then(data=> data.json())
         .then(json => setPatients(json));
 
-        // const refreshId = setInterval( () => {               
-
-        //     const selPatient = patients.reduce((pre, cur) => cur._id === selPatientId ? cur : pre, {deviceId: null });
-        //     const selPatientDevice = devs.reduce((pre, cur) => cur._id === selPatient.deviceId ? cur : pre, {});
-        //     console.log("Get them readings", selPatientDevice)
-        //     if(selPatientDevice.deviceId != null) {
-        //         Api.get('/api/readings?name=' + selPatientDevice.deviceId + readingsParams)                    
-        //         .then(data => data.json())
-        //         .then(json => {
-        //             console.log("We are annyoing", json);
-        //             setReadings(json.reverse());
-        //         });
-        //     }
-        // }, 5000);
-        
-        // // On unmount
-        // return () => clearInterval(refreshId);
+        // On unmount
+        return () => clearInterval(timerRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const fetchReadings = () => {
+        Api.get('/api/readings?name=' + selPatientDevice.deviceId + readingsParams)                    
+        .then(data => data.json())
+        .then(json => {
+            setReadings(json.reverse());
+        });
+    }
+
+    const timerCb = () => fetchReadings();
+
     useEffect(() => {
-        // console.log("Get them readings", selPatientDevice)
         if(selPatientDevice.deviceId != null) {
-            Api.get('/api/readings?name=' + selPatientDevice.deviceId + readingsParams)
-            .then(data=> data.json())
-            .then(json => setReadings(json.reverse()));
+            fetchReadings()
+
+            if(typeof timerRef.current != "undefined") {
+                clearInterval(timerRef.current);
+            }
+
+            timerRef.current = setInterval(timerCb, 5500);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selPatientDevice])
 
     const options = {
