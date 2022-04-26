@@ -34,10 +34,13 @@ const options = {
 };
 
  const LineChart = props => {
-    options.plugins.title.text = props.title;
+
+    const myOpt = {...options}
+    myOpt.plugins.title = {...myOpt.plugins.title}
+    myOpt.plugins.title.text = props.title;
 
     return (
-        <Line options={options} data={props.data}/>
+        <Line options={myOpt} data={props.data}/>
     )
 }
 

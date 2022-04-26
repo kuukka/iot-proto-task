@@ -36,7 +36,7 @@ const DeviceForm = ({data, setData, readOnly}) => {
             <Form.Label>Sensors</Form.Label>
             <ul className='sensorList'>
               <li>Temperature: {data.sensorTemperature === true ? "yes": "no"}</li>
-              <li>Humidity: {data.sensorHumiditiy === true ? "yes": "no"}</li>
+              <li>Humidity: {data.sensorMoisture === true ? "yes": "no"}</li>
               <li>Luminance: {data.sensorLuminance === true ? "yes": "no"}</li>
               <li>HeartBeat: {data.sensorHeartbeat === true ? "yes": "no"}</li>
               <li>Distance: {data.sensorDistance === true ? "yes": "no"}</li>
@@ -81,11 +81,11 @@ const DeviceForm = ({data, setData, readOnly}) => {
             onChange={onCbChange}
           />
           <Form.Check 
-            name="sensorHumiditiy"
+            name="sensorMoisture"
             type="switch"
             id="hum-switch"
             label="Humidity"
-            checked={data.sensorHumiditiy === true}
+            checked={data.sensorMoisture === true}
             onChange={onCbChange}
           />
           <Form.Check 

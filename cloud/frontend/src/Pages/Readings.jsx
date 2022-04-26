@@ -22,6 +22,8 @@ const Devices = () => {
     const selPatient = patients.reduce((pre, cur) => cur._id === selPatientId ? cur : pre, {deviceId: null });
     const selPatientDevice = devs.reduce((pre, cur) => cur._id === selPatient.deviceId ? cur : pre, {});
 
+    const readingsParams = "&limit=50&sort=time_desc"; 
+
     const addHours = (time, h) => {
         const dt = new Date(time);
         dt.setTime(dt.getTime() + (h*60*60*1000));
@@ -41,25 +43,32 @@ const Devices = () => {
         .then(data=> data.json())
         .then(json => setPatients(json));
 
-        // const refreshId = setInterval(() => {        
-        //     Api.get('/api/readings?name=4177955E&limit=50')
-        //     .then(data => data.json())
-        //     .then(json => {
-        //         console.log("We are annyoing", json);
-        //         setReadings(json);
-        //     });
-        // },1000)
+        // const refreshId = setInterval( () => {               
+
+        //     const selPatient = patients.reduce((pre, cur) => cur._id === selPatientId ? cur : pre, {deviceId: null });
+        //     const selPatientDevice = devs.reduce((pre, cur) => cur._id === selPatient.deviceId ? cur : pre, {});
+        //     console.log("Get them readings", selPatientDevice)
+        //     if(selPatientDevice.deviceId != null) {
+        //         Api.get('/api/readings?name=' + selPatientDevice.deviceId + readingsParams)                    
+        //         .then(data => data.json())
+        //         .then(json => {
+        //             console.log("We are annyoing", json);
+        //             setReadings(json.reverse());
+        //         });
+        //     }
+        // }, 5000);
         
-        // On unmount
+        // // On unmount
         // return () => clearInterval(refreshId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
-        console.log("Get them readings", selPatientDevice)
+        // console.log("Get them readings", selPatientDevice)
         if(selPatientDevice.deviceId != null) {
-            Api.get('/api/readings?name='+selPatientDevice.deviceId+'&limit=50&sort=time_desc')
+            Api.get('/api/readings?name=' + selPatientDevice.deviceId + readingsParams)
             .then(data=> data.json())
-            .then(json => setReadings(json));
+            .then(json => setReadings(json.reverse()));
         }
     }, [selPatientDevice])
 
@@ -125,7 +134,7 @@ const Devices = () => {
 // console.log("patients", patients)
 // console.log("selected patient", selPatient)
 // console.log("patient device", selPatientDevice);
-console.log("readings", readings);
+// console.log("readings", re   adings);
 
     return (
         <Page>
