@@ -130,3 +130,4 @@ dmypy.json
 
 # Muuta tarpeellista
 *.ini
+*.token
