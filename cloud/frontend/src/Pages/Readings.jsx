@@ -53,7 +53,7 @@ const Devices = () => {
     useEffect(() => {
         console.log("Get them readings", selPatientDevice)
         if(selPatientDevice.deviceId != null) {
-            Api.get('/api/readings?name='+selPatientDevice.deviceId+'&limit=50')
+            Api.get('/api/readings?name='+selPatientDevice.deviceId+'&limit=50&sort=id_desc')
             .then(data=> data.json())
             .then(json => setReadings(json));
         }

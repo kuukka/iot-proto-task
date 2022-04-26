@@ -2,15 +2,22 @@ const Reading = require('../models/Reading');
 
 exports.findAllReadings = async (req, res) => {
     try {
-        const { name, limit } = req.query;
-        console.log("name", name, req.params)
+        const { name, limit, sort } = req.query;
         const search = name ? {deviceName: name} : undefined
         const qLimit = limit ? parseInt(limit, 10) : 0
-        console.log("search", search)
-        const readings = await Reading.find(search).limit(qLimit);
+        let sortBy;
+        switch (sort) {
+            case "id_desc": sortBy = {_id: -1}; break;
+            case "id_asc":  sortBy = {_id:  1}; break;
+            case "time_desc": sortBy = {timestamp: -1}; break;
+            case "time_asc":  sortBy = {timestamp:  1}; break;
+            default:
+                sortBy = null;
+        }
+        const readings = await Reading.find(search).limit(qLimit).sort(sortBy);
         res.json(readings)
     } catch (error) {
-        res.status(500).json({
+        res.status(500).json({            
             message: error.message || "Something goes wrong retieving the tasks"
         })
     }
