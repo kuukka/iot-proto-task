@@ -5,9 +5,7 @@ import Nav from 'react-bootstrap/esm/Nav';
 import Page from '../Template/Page';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { useParams } from "react-router-dom";
-import BarChart from '../Components/BarChart';
 import LineChart from '../Components/LineChart';
-import MultiaxisLineChart from '../Components/MultiaxisLineChart';
 import Api from '../utils/Api';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -23,6 +21,12 @@ const Devices = () => {
     const selPatientId = params.device || "new";
     const selPatient = patients.reduce((pre, cur) => cur._id === selPatientId ? cur : pre, {deviceId: null });
     const selPatientDevice = devs.reduce((pre, cur) => cur._id === selPatient.deviceId ? cur : pre, {});
+
+    const addHours = (time, h) => {
+        const dt = new Date(time);
+        dt.setTime(dt.getTime() + (h*60*60*1000));
+        return dt;
+    } 
 
     // On mount 
     useEffect(() => {        
@@ -53,7 +57,7 @@ const Devices = () => {
     useEffect(() => {
         console.log("Get them readings", selPatientDevice)
         if(selPatientDevice.deviceId != null) {
-            Api.get('/api/readings?name='+selPatientDevice.deviceId+'&limit=50&sort=id_desc')
+            Api.get('/api/readings?name='+selPatientDevice.deviceId+'&limit=50&sort=time_desc')
             .then(data=> data.json())
             .then(json => setReadings(json));
         }
@@ -85,8 +89,10 @@ const Devices = () => {
         if(readings && readings.length > 0 && selPatientDevice[sensorType.key] === true) {
             const data = {
                 labels: readings.map(e => {
-                    const dt = new Date(e.timestamp);
-                    const timeStr = `${dt.getHours()}.${dt.getMinutes()}`
+                    const dt = addHours(e.timestamp, 3);
+                    const hours = ("0"+ dt.getHours() ).slice(-2);
+                    const minutes = ("0" + dt.getMinutes()).slice(-2);
+                    const timeStr = `${hours}.${minutes}`;
                     return timeStr
                 }),
                 datasets: [
@@ -118,7 +124,7 @@ const Devices = () => {
 // console.log("patients", patients)
 // console.log("selected patient", selPatient)
 // console.log("patient device", selPatientDevice);
-// console.log("readings", readings);
+console.log("readings", readings);
 
     return (
         <Page>
