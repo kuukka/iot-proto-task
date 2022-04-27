@@ -17,16 +17,16 @@
  * along with XBee-Arduino.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//#define ARDUINO1    1     // comment out this line when compiling for Arduino #2
+#define ARDUINO1    1     // comment out this line when compiling for Arduino #2
                           // Arduino 1 is with 5E Xbee and Arduino 2 with 82 Xbee
 #if defined(ARDUINO1)
     // installed sensors
-    const bool lightSensor = false;
-    const bool tempHumSensor = true;
+    const bool lightSensor = true;
+    const bool tempHumSensor = false;
     const bool distanceSensor = false;  
     const bool heartrateSensor = true;
 #else
-    const bool lightSensor = true;
+    const bool lightSensor = false;
     const bool tempHumSensor = true;
     const bool distanceSensor = true;  
     const bool heartrateSensor = false;
