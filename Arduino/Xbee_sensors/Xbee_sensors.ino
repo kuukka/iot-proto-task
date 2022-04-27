@@ -17,7 +17,7 @@
  * along with XBee-Arduino.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define ARDUINO1    1     // comment out this line when compiling for Arduino #2
+//#define ARDUINO1    1     // comment out this line when compiling for Arduino #2
                           // Arduino 1 is with 5E Xbee and Arduino 2 with 82 Xbee
 #if defined(ARDUINO1)
     // installed sensors
@@ -128,7 +128,7 @@ void transfer() {
     }
 }
 
-int read_light() {
+uint8_t read_light() {
   return analogRead(A0);
 }
 
@@ -189,8 +189,8 @@ void loop() {
     //payload[6] = heart_rate();
 
     //int amountOfLight = read_light();
-    int amountOfLight = read_light();
-    byte lightByte = byte(amountOfLight);
+    uint8_t lightByte = read_light();
+    //byte lightByte = byte(amountOfLight);
 
     //float humidity = read_humidity();
     byte humidityByte = byte(read_humidity());
